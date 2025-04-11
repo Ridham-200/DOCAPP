@@ -171,6 +171,22 @@ const getAllDoctorsController = async (req, res) => {
     });
   }
 };
+// userController.js
+const getUserInfoController = async (req, res) => {
+  try {
+    const user = await userModel.findById({ _id: req.body.userId });
+    let role = "user";
+    if (user.isAdmin) role = "admin";
+    else if (user.isDoctor) role = "doctor";
+    res.status(200).send({
+      success: true,
+      data: role}
+    );
+  } catch (error) {
+    res.status(500).send({ success: false, message: 'Error getting user info' });
+  }
+};
+
 
 //BOOK APPOINTMENT
 const bookeAppointmnetController = async (req, res) => {
@@ -268,6 +284,7 @@ module.exports={loginController,
   getAllNotificationController,
   deleteAllNotificationController,
   getAllDoctorsController,
+  getUserInfoController,
   bookeAppointmnetController,
   bookingAvailabilityController,
   userAppointmentsController,
